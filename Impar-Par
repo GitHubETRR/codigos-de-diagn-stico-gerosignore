@@ -91,7 +91,7 @@ int main() {
             case 1:
                 printf("Ingrese un número: ");
                 scanf("%d", &valor);
-                lista = insertarFinal(lista, valor); // devolvemos la nueva cabeza
+                lista = insertarFinal(lista, valor); 
                 break;
 
             case 2:
