@@ -3,13 +3,11 @@
 
 #define VALORERROR -1
 
-// Estructura del nodo
 typedef struct Nodo {
     int valor;
     struct Nodo* siguiente;
 } Nodo;
 
-// Crear un nuevo nodo
 Nodo* crearNodo(int valor) {
     Nodo* nuevo = (Nodo*)malloc(sizeof(Nodo));
     if(nuevo==NULL){
@@ -22,7 +20,6 @@ Nodo* crearNodo(int valor) {
     }
 }
 
-// Insertar al final y devolver la nueva cabeza
 Nodo* insertarFinal(Nodo* cabeza, int valor) {
     Nodo* nuevo = crearNodo(valor);
 
@@ -38,7 +35,6 @@ Nodo* insertarFinal(Nodo* cabeza, int valor) {
     return cabeza;
 }
 
-// Mostrar la lista
 void mostrarLista(Nodo* cabeza) {
     if (cabeza == NULL) {
         printf("La lista está vacía.\n");
@@ -53,7 +49,6 @@ void mostrarLista(Nodo* cabeza) {
     printf("NULL\n");
 }
 
-// Contar pares e impares
 void contarParesImpares(Nodo* cabeza, int* pares, int* impares) {
     *pares = 0;
     *impares = 0;
@@ -69,7 +64,6 @@ void contarParesImpares(Nodo* cabeza, int* pares, int* impares) {
     }
 }
 
-// Liberar memoria
 void liberarLista(Nodo* cabeza) {
     Nodo* temp;
     while (cabeza != NULL) {
