@@ -1,0 +1,131 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct Tarea {
+    char descripcion[100];
+    int prioridad;
+    int completada; // 0 = no, 1 = sí
+    struct Tarea* siguiente;
+} Tarea;
+
+Tarea* cargar_tareas(const char* archivo) {
+    FILE* f = fopen(archivo, "r");
+    if (!f) return NULL;
+
+    Tarea *cabeza = NULL, *actual = NULL;
+    char desc[100];
+    int prioridad, completada;
+
+    while (fscanf(f, "%99[^,],%d,%d\n", desc, &prioridad, &completada) == 3) {
+        Tarea* nueva = malloc(sizeof(Tarea));
+        strcpy(nueva->descripcion, desc);
+        nueva->prioridad = prioridad;
+        nueva->completada = completada;
+        nueva->siguiente = NULL;
+
+        if (!cabeza)
+            cabeza = nueva;
+        else
+            actual->siguiente = nueva;
+        actual = nueva;
+    }
+
+    fclose(f);
+    return cabeza;
+}
+
+void guardar_tareas(const char* archivo, Tarea* cabeza) {
+    FILE* f = fopen(archivo, "w");
+    if (!f) {
+        perror("No se pudo guardar");
+        return;
+    }
+
+    for (Tarea* t = cabeza; t; t = t->siguiente)
+        fprintf(f, "%s - prioridad: %d\n", t->descripcion, t->prioridad);
+
+    fclose(f);
+}
+
+void agregar_tarea(Tarea** cabeza) {
+    Tarea* nueva = malloc(sizeof(Tarea));
+
+    printf("Descripción: ");
+    scanf(" %[^\n]", nueva->descripcion);
+    printf("Prioridad (1-10): ");
+    scanf("%d", &nueva->prioridad);
+
+    nueva->completada = 0;
+    nueva->siguiente = *cabeza;
+    *cabeza = nueva;
+}
+
+void completar_tarea(Tarea* cabeza) {
+    int n = 1, seleccion;
+    Tarea* actual = cabeza;
+
+    printf("Tareas:\n");
+    while (actual) {
+        printf("%d. [%c] %s (Prioridad %d)\n", n, actual->completada ? 'X' : ' ', actual->descripcion, actual->prioridad);
+        actual = actual->siguiente;
+        n++;
+    }
+
+    printf("Número de tarea a marcar como completada: ");
+    scanf("%d", &seleccion);
+
+    actual = cabeza;
+    for (int i = 1; i < seleccion && actual; i++)
+        actual = actual->siguiente;
+
+    if (actual)
+        actual->completada = 1;
+    else
+        printf("Número inválido\n");
+}
+
+void mostrar_tareas(Tarea* cabeza) {
+    printf("\nTareas pendientes:\n");
+    int i = 1;
+    for (Tarea* t = cabeza; t; t = t->siguiente, i++)
+        printf("%d. [%c] %s (Prioridad %d)\n", i, t->completada ? 'X' : ' ', t->descripcion, t->prioridad);
+}
+
+void liberar_tareas(Tarea* cabeza) {
+    while (cabeza) {
+        Tarea* temp = cabeza;
+        cabeza = cabeza->siguiente;
+        free(temp);
+    }
+}
+
+int main() {
+    const char* archivo = "tareas.txt";
+    Tarea* lista = cargar_tareas(archivo);
+    int opcion;
+
+    do {
+        printf("\n--- LISTA DE TAREAS ---\n");
+        printf("1. Ver tareas\n");
+        printf("2. Agregar tarea\n");
+        printf("3. Completar tarea\n");
+        printf("4. Guardar y salir\n");
+        printf("Opción: ");
+        scanf("%d", &opcion);
+
+        switch (opcion) {
+            case 1: mostrar_tareas(lista); break;
+            case 2: agregar_tarea(&lista); break;
+            case 3: completar_tarea(lista); break;
+            case 4:
+                guardar_tareas(archivo, lista);
+                printf("Guardado exitoso.\n");
+                break;
+            default: printf("Opción inválida\n");
+        }
+    } while (opcion != 4);
+
+    liberar_tareas(lista);
+    return 0;
+}
