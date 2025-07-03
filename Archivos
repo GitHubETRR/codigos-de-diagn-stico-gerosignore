@@ -11,7 +11,7 @@ typedef struct Tarea {
 
 Tarea* cargar_tareas(const char* archivo);
 void guardar_tareas(const char* archivo, Tarea* cabeza);
-void agregar_tarea(Tarea** cabeza);
+Tarea* agregar_tarea(Tarea* cabeza);  
 void completar_tarea(Tarea* cabeza);
 void mostrar_tareas(Tarea* cabeza);
 void liberar_tareas(Tarea* cabeza);
@@ -32,7 +32,7 @@ int main() {
 
         switch (opcion) {
             case 1: mostrar_tareas(lista); break;
-            case 2: agregar_tarea(&lista); break;
+            case 2: lista = agregar_tarea(lista); break;  
             case 3: completar_tarea(lista); break;
             case 4:
                 guardar_tareas(archivo, lista);
@@ -45,7 +45,6 @@ int main() {
     liberar_tareas(lista);
     return 0;
 }
-
 
 Tarea* cargar_tareas(const char* archivo) {
     FILE* f = fopen(archivo, "r");
@@ -90,7 +89,7 @@ void guardar_tareas(const char* archivo, Tarea* cabeza) {
     fclose(f);
 }
 
-void agregar_tarea(Tarea** cabeza) {
+Tarea* agregar_tarea(Tarea* cabeza) {  
     Tarea* nueva = malloc(sizeof(Tarea));
 
     printf("Descripción: ");
@@ -99,8 +98,8 @@ void agregar_tarea(Tarea** cabeza) {
     scanf("%d", &nueva->prioridad);
 
     nueva->completada = 0;
-    nueva->siguiente = *cabeza;
-    *cabeza = nueva;
+    nueva->siguiente = cabeza;
+    return nueva;  
 }
 
 void completar_tarea(Tarea* cabeza) {
