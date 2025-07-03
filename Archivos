@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define MOSTRAR_TAREAS 1
+#define AGREGAR_TAREAS 2
+#define COMPLETAR_TAREAS 3
+#define GUARDAR_TAREAS 4
+
 typedef struct Tarea {
     char descripcion[100];
     int prioridad;
@@ -31,10 +36,10 @@ int main() {
         scanf("%d", &opcion);
 
         switch (opcion) {
-            case 1: mostrar_tareas(lista); break;
-            case 2: lista = agregar_tarea(lista); break;  
-            case 3: completar_tarea(lista); break;
-            case 4:
+            case MOSTRAR_TAREAS: mostrar_tareas(lista); break;
+            case AGREGAR_TAREAS: lista = agregar_tarea(lista); break;  
+            case COMPLETAR_TAREAS: completar_tarea(lista); break;
+            case GUARDAR_TAREAS:
                 guardar_tareas(archivo, lista);
                 printf("Guardado exitoso.\n");
                 break;
