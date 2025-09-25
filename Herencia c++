@@ -1,0 +1,46 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Clase base
+class Persona {
+protected:
+    string nombre;
+    int edad;
+
+public:
+    Persona(string _nombre, int _edad) {
+        nombre = _nombre;
+        edad = _edad;
+    }
+
+    void mostrarDatos() {
+        cout << "Nombre: " << nombre << endl;
+        cout << "Edad: " << edad << endl;
+    }
+};
+
+// Clase derivada
+class Estudiante : public Persona {
+private:
+    string carrera;
+
+public:
+    Estudiante(string _nombre, int _edad, string _carrera)
+        : Persona(_nombre, _edad) { // Llamada al constructor de Persona
+        carrera = _carrera;
+    }
+
+    void mostrarDatos() {
+        // Llamo a la función de la clase base
+        Persona::mostrarDatos();
+        cout << "Carrera: " << carrera << endl;
+    }
+};
+
+int main() {
+    Estudiante e1("Ana", 20, "Ingeniería en Sistemas");
+    e1.mostrarDatos();
+
+    return 0;
+}
