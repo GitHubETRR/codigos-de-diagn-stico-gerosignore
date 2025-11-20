@@ -69,12 +69,12 @@ int main() {
     do {
         mostrarMenu();
         cin >> opcion;
-        cin.ignore(); // limpia el salto de línea pendiente
+        cin.ignore(); 
 
         switch (opcion) {
             case 1:
                 cout << "Marca del auto: ";
-                getline(cin, marca); // permite ingresar varias palabras
+                getline(cin, marca); 
                 garage.push_back(new Auto(marca));
                 break;
 
