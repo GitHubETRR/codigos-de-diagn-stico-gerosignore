@@ -30,7 +30,7 @@ public:
     Auto(const string& m) : Vehiculo(m) {}
 
     void arrancar() override {
-        cout << marca << " (Auto) enciende el motor: ¡Vrum vrum!" << endl;
+        cout << marca << " (Auto) enciende el motor" << endl;
     }
 
     string getTipo() override {
@@ -43,7 +43,7 @@ public:
     Moto(const string& m) : Vehiculo(m) {}
 
     void arrancar() override {
-        cout << marca << " (Moto) arranca: ¡Brrrm brrrm!" << endl;
+        cout << marca << " (Moto) arranca" << endl;
     }
 
     string getTipo() override {
